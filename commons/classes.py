@@ -273,6 +273,7 @@ class Job:
 
     def __init__(self, **data):
         self._id = data['_id']
+        self.name = data.get('name')
         self.status = data.get('status', 'started')
         self.result = data.get('result')
         self.start = data.get('start', datetime.utcnow())
