@@ -9,10 +9,14 @@ def track(name, history=False):
         def inner(*args, **wargs):
             run = None
             job = Job(_id=f'_{name}')
+            job.name = name
+            
             JobDatabase().save(job)
 
             if history:
                 run = Job(_id=f'{name}_{job.start.strftime("%d/%m/%Y_%H:%M:%S")}')
+                run.name = name
+
                 JobDatabase().save(run)
 
             try:
