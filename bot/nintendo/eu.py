@@ -44,9 +44,15 @@ def fetch_games(system):
         if not len(json):
             break
 
-        for game in json:
+        for data in json:
             try:
-                yield game.get('nsuid_txt')[0], game
+                nsuid = [
+                    nsuid_txt
+                    for nsuid_txt in data.get('nsuid_txt', [])
+                    if nsuid_txt[0] in ['5', '7']
+                ][0]
+
+                yield nsuid, data
             except:
                 continue
 
@@ -62,10 +68,16 @@ def extract_game_data(system, data):
 
     try:
         # Getting nsuids for switch (7) or 3ds (5)
-        nsuid, product_id = [
-            (nsuid_txt, product_code_txt)
-                for nsuid_txt, product_code_txt in zip(data.get('nsuid_txt', []), data.get('product_code_txt', []))
-                    if nsuid_txt[0] in ['5', '7'] and product_code_txt[:3] in ['HAC', 'CTR', 'KTR']
+        nsuid = [
+            nsuid_txt
+                for nsuid_txt in data.get('nsuid_txt', [])
+                    if nsuid_txt[0] in ['5', '7']
+        ][0]
+
+        product_id = [
+            product_code_txt
+                for product_code_txt in data.get('product_code_txt', [])
+                    if product_code_txt[:3] in ['HAC', 'CTR', 'KTR']
         ][0]
     except:
         return None
@@ -101,13 +113,20 @@ def extract_game_data(system, data):
 
 def list_new_games(system, games_on_db):
     for nsuid, data in fetch_games(system):
+        if nsuid[0] not in ['5', '7']:
+            LOG.info(f'Invalid nsuid {nsuid}')
+            continue
+
         if nsuid in games_on_db:
             continue
 
         game = extract_game_data(system, data)
 
         if game:
-            LOG.info(f'Found new game {game}')
+            if game.id in ['3DS/AL8']:
+                continue
+
+            LOG.info(f'Found new game {game} {nsuid}')
 
             yield nsuid, game
         else:

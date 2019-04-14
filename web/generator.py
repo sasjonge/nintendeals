@@ -3,7 +3,6 @@ from datetime import datetime
 from flask import render_template
 
 from db.mongo import GamesDatabase
-from db.mongo import PricesDatabase
 
 from bot.wishlist.constants import ADD_URL
 from bot.wishlist.constants import SHOW_URL

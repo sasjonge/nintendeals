@@ -25,6 +25,15 @@ alts = {
     '70010000001641': f'{NX_TAG}/AHAB',    # NA: Party Planet
     '70010000007283': f'{NX_TAG}/AHAB2',   # EU: 30-in-1 Game Collection: Volume 1
     '70010000001906': f'{NX_TAG}/AHKT',    # EU: Timber Tennis: Versus
+    '70010000011742': f'{NX_TAG}/AQVM2',   # EU: Ludomania
+    '70010000017484': f'{NX_TAG}/AD2D2',   # JP: 信長の野望･大志 With パワーアップキット
+    '70010000017107': f'{NX_TAG}/AGBL2',   # JP: Dragon Marked For Deathエキスパートセット - 忍びと魔女 -
+    '70010000013462': f'{NX_TAG}/AQNY2',   # JP: Nba 2K19 20周年記念エディション
+    '70010000012905': f'{NX_TAG}/AQYT2',   # JP: アトリエ ～アーランドの錬金術士１・２・３～ Dx
+    '70010000015665': f'{NX_TAG}/ASHE2',   # JP: スーパーロボット大戦Ｔ プレミアムアニメソング＆サウンドエディション
+    '70010000013437': f'{NX_TAG}/AG722',   # NA: Gal Metal World Tour Edition
+    '70010000017108': f'{NX_TAG}/AGBL2',   # NA: Dragon Marked for Death: Advanced Attackers
+    '70010000015855': f'{NX_TAG}/AQYT2',   # NA: Atelier Arland series Deluxe Pack
 }
 
 category_map = {

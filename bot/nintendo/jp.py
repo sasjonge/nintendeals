@@ -71,7 +71,10 @@ def list_new_games(system, games_on_db):
         game = extract_game_data(system, data)
 
         if game:
-            LOG.info(f'Found new game {game}')
+            if game.id in ['3DS/AL8']:
+                continue
+
+            LOG.info(f'Found new game {game} {nsuid}')
 
             yield nsuid, game
         else:
