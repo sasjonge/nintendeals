@@ -17,7 +17,7 @@ from commons.keys import FLAG
 from commons.keys import ID
 from commons.keys import NAME
 from commons.keys import REGION
-from commons.keys import US, ZA, NZ
+from commons.keys import US, CH, NZ
 
 from commons.settings import WEBSITE_URL
 
@@ -213,7 +213,7 @@ def make_main_row(game, countries_with_sale):
     for country in COUNTRIES:
         countries.append(countries_with_sale.get(country, EMPTY))
 
-        if country in [US, ZA, NZ]:
+        if country in [US, CH, NZ]:
             countries.append(' ')
 
     countries = ''.join(countries)
