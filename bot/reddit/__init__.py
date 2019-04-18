@@ -96,11 +96,11 @@ class Reddit(metaclass=Singleton):
             else:
                 LOG.info(f'Submission might be replaced (monday/thursday): {sub}')
 
-            if now.hour < 18:
-                LOG.info(f'Submission will be reused (not 18:00 UTC yet): {sub}')
+            if now.hour < 17:
+                LOG.info(f'Submission will be reused (not 17:00 UTC yet): {sub}')
                 return True
             else:
-                LOG.info(f'Submission might be replaced (18:00 UTC): {sub}')
+                LOG.info(f'Submission might be replaced (17:00 UTC): {sub}')
 
             if sub.created_at.day != now.day:
                 LOG.info(f'Submission will be replaced (it\'s monday/thursday, my dudes): {sub}')
