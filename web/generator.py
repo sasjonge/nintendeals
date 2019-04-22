@@ -59,14 +59,23 @@ def wishlist(system, country):
         return None
 
     region = country[REGION]
-    games = GamesDatabase().load_all(
+    games = list(GamesDatabase().load_all(
         filter={
             SYSTEM: system[ID],
             f'nsuids.{region}': {'$ne': None},
             'free_to_play': False
         },
         sort=[(f'release_dates.{region}', -1)]
-    )
+    ))
+
+    for game in games:
+        game.countries = []
+
+        for c, d in COUNTRIES.items():
+            if d[REGION] in game.nsuids:
+                game.countries.append(c)
+
+        game.countries = ' '.join(game.countries)
 
     return render_template(
         'wishlist.html',
