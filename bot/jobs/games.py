@@ -92,8 +92,8 @@ def update_games(system, wishlist_counts):
         game.wishlisted_history[week] = wishlist_counts.get(game_id, 0)
         game.wishlisted = game.wishlisted_average
 
-        # if game.scores.next_update < now:
-        #     game.scores = metacritic.get_scores(system, game.titles.values())
+        if game.scores.next_update < now:
+            game.scores = metacritic.get_scores(system, game.titles.values())
 
         try:
             GamesDatabase().save(game)
