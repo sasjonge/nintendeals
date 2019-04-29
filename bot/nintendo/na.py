@@ -1,4 +1,5 @@
 import logging
+import string
 import re
 from datetime import datetime
 
@@ -31,6 +32,8 @@ FIXES = {
     "Splatoon 2 + Nintendo Switch Online Individual Membership (12 Months)" : "Splatoon 2"
 }
 
+CACHE = set()
+
 
 def fetch_games(system):
     headers = {
@@ -57,37 +60,45 @@ def fetch_games(system):
             "requests": [
                 {
                     "indexName": "noa_aem_game_en_us",
-                    "params": "hitsPerPage=200&maxValuesPerFacet=30&page={page}",
+                    "params": "query={query}&hitsPerPage=200&maxValuesPerFacet=30&page={page}",
                     "facetFilters": [["platform:{system}"]]
                 }
             ]
         }
     """.replace('{system}', SYSTEMS[system][ALIAS][NA])
 
-    page = 1
+    for query in string.ascii_lowercase + string.digits:
+        page = 0
 
-    while True:
-        LOG.info(f'Fetching games from page {page}')
+        while True:
+            LOG.info(f'Fetching games from page {page} for query "{query}"')
 
-        response = requests.post(
-            url=AMERICA[API],
-            headers=headers,
-            params=params,
-            data=data.replace('{page}', str(page))
-        )
+            response = requests.post(
+                url=AMERICA[API],
+                headers=headers,
+                params=params,
+                data=data.replace('{query}', query).replace('{page}', str(page))
+            )
 
-        hits = response.json()['results'][0]['hits']
+            hits = response.json()['results'][0]['hits']
 
-        if len(hits) == 0:
-            break
+            if len(hits) == 0:
+                break
 
-        for hit in hits:
-            if not hit.get('nsuid'):
-                continue
+            for hit in hits:
+                nsuid = hit.get('nsuid')
 
-            yield hit.get('nsuid'), hit.get('slug')
+                if not nsuid:
+                    continue
 
-        page += 1
+                if nsuid in CACHE:
+                    continue
+                else:
+                    CACHE.add(nsuid)
+
+                yield nsuid, hit.get('slug')
+
+            page += 1
 
 
 def extract_game_data(system, slug):
@@ -139,6 +150,8 @@ def extract_game_data(system, slug):
 
 
 def list_new_games(system, games_on_db):
+    CACHE.clear()
+
     for nsuid, slug in fetch_games(system):
         if nsuid in games_on_db:
             continue
