@@ -207,7 +207,7 @@ def generate_country_post(games, prices, system, country):
     return title, '\n'.join(content)
 
 
-def make_main_row(game, countries_with_sale):
+def make_main_row(game, countries_with_sale, avg_discount):
     countries = []
 
     for country in COUNTRIES:
@@ -223,15 +223,15 @@ def make_main_row(game, countries_with_sale):
     if len(title) > 40:
         title = f'{title[:39]}…'.replace(' …', '…')
 
-    return f'{title}|{countries}|{game.scores.score}|{game.wishlisted}'
+    return f'{title}|{countries}|{int(avg_discount)}|{game.scores.score}|{game.wishlisted}'
 
 
 def generate_main_table(games, prices, system):
     games = sorted(games.values(), key=lambda x: x.wishlisted, reverse=True)
 
     content = [
-        f'Title | Countries/Regions | Score | {STAR} ',
-        '--- | --- | :---: | :---:'
+        f'Title | Countries/Regions | % avg | Score | {STAR} ',
+        '--- | --- | :---: | :---: | :---:'
     ]
 
     for game in games[:30]:
@@ -242,6 +242,8 @@ def generate_main_table(games, prices, system):
             continue
 
         countries = {}
+
+        discounts = set()
 
         for country, details in COUNTRIES.items():
             nsuid = game.nsuids.get(details[REGION])
@@ -266,8 +268,10 @@ def generate_main_table(games, prices, system):
 
             countries[country] = details[FLAG]
 
+            discounts.add(latest_sale.discount)
+
         if len(countries):
-            row = make_main_row(game, countries)
+            row = make_main_row(game, countries, sum(discounts)/len(discounts))
             content.append(row)
 
     if len(content) < 3:
