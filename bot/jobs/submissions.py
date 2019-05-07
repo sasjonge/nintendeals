@@ -28,18 +28,29 @@ def update_submissions():
 
         for country in COUNTRIES:
             title, content = generator.generate_country_post(games, sales, system, country)
+            
+            LOG.info(f'Generated post for {country}: {len(content)} characters')
+            
+            try:
+                sub = reddit.submit(system, USER_SUBREDDIT, title, content, country=country)
+                submissions[sub.id] = sub
 
-            sub = reddit.submit(system, USER_SUBREDDIT, title, content, country=country)
-            submissions[sub.id] = sub
-
-            updated_submissions += 1
+                updated_submissions += 1
+            except Exception as e:
+                print(content)
+                raise e
 
         title, content = generator.generate_main_post(games, sales, submissions, system)
 
+        LOG.info(f'Generated post for {system}: {len(content)} characters')
+        
         for subreddit in details[SUBREDDITS]:
-            reddit.submit(system, subreddit, title, content)
-
-            updated_submissions += 1
+            try:
+                reddit.submit(system, subreddit, title, content)
+                updated_submissions += 1
+            except Exception as e:
+                print(content)
+                raise e
 
     return f'Updated submissions: {updated_submissions}'
 

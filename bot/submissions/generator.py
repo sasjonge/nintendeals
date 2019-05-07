@@ -180,8 +180,8 @@ def generate_country_post(games, prices, system, country):
     country = COUNTRIES[country]
 
     week_sales, current_sales, games_on_sale = generate_country_tables(games, prices, system, country)
-
-    if len(week_sales) + len(current_sales) > 35000:
+    
+    if len(''.join(week_sales)) + len(''.join(current_sales)) > 35000:
         week_sales, current_sales, games_on_sale = \
             generate_country_tables(games, prices, system, country, disable_urls=True)
 
@@ -223,14 +223,14 @@ def make_main_row(game, countries_with_sale, avg_discount):
     if len(title) > 40:
         title = f'{title[:39]}…'.replace(' …', '…')
 
-    return f'{title}|{countries}|{int(avg_discount)}|{game.scores.score}|{game.wishlisted}'
+    return f'{title}|{countries}|`{int(avg_discount)}`|{game.scores.score}|{game.wishlisted}'
 
 
 def generate_main_table(games, prices, system):
     games = sorted(games.values(), key=lambda x: x.wishlisted, reverse=True)
 
     content = [
-        f'Title | Countries/Regions | % avg | Score | {STAR} ',
+        f'Title | Countries/Regions | % | Score | {STAR} ',
         '--- | --- | :---: | :---: | :---:'
     ]
 
