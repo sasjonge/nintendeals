@@ -1,7 +1,8 @@
 import logging
 
 from bot.reddit import Reddit
-from bot.submissions import generator
+from bot.submissions import country_generator
+from bot.submissions import main_generator
 
 from db.util import get_games_on_sale
 
@@ -27,12 +28,15 @@ def update_submissions():
         submissions = {}
 
         for country in COUNTRIES:
-            title, content = generator.generate_country_post(games, sales, system, country)
-            
+            title, content, total_new_sales, total_sales = country_generator.generate(games, sales, system, country)
+
             LOG.info(f'Generated post for {country}: {len(content)} characters')
             
             try:
                 sub = reddit.submit(system, USER_SUBREDDIT, title, content, country=country)
+                sub.new_sales = total_new_sales
+                sub.total_sales = total_sales
+
                 submissions[sub.id] = sub
 
                 updated_submissions += 1
@@ -40,7 +44,7 @@ def update_submissions():
                 print(content)
                 raise e
 
-        title, content = generator.generate_main_post(games, sales, submissions, system)
+        title, content = main_generator.generate(games, sales, submissions, system)
 
         LOG.info(f'Generated post for {system}: {len(content)} characters')
         
