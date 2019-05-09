@@ -2,27 +2,22 @@ import logging
 from datetime import datetime
 
 from bot import metacritic
-from db.mongo import GamesDatabase
-from db.mongo import PricesDatabase
-from db.mongo import WishlistDatabase
-
 from bot.nintendo import eu
 from bot.nintendo import jp
 from bot.nintendo import na
-
 from commons.classes import Game
 from commons.classes import Price
-
 from commons.config import COUNTRIES
 from commons.config import REGIONS
 from commons.config import SYSTEMS
-
 from commons.keys import EU
 from commons.keys import JP
 from commons.keys import NA
 from commons.keys import REGION
 from commons.keys import SYSTEM
-
+from db.mongo import GamesDatabase
+from db.mongo import PricesDatabase
+from db.mongo import WishlistDatabase
 
 LOG = logging.getLogger('jobs.games')
 

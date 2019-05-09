@@ -2,25 +2,21 @@ from datetime import datetime
 
 from flask import render_template
 
-from db.mongo import GamesDatabase
-
 from bot.wishlist.constants import ADD_URL
-from bot.wishlist.constants import SHOW_URL
 from bot.wishlist.constants import DELETE_URL
-
+from bot.wishlist.constants import SHOW_URL
 from commons.config import COUNTRIES
 from commons.config import SYSTEMS
-
 from commons.emoji import NINTENDO
 from commons.emoji import PLUS
 from commons.emoji import STAR
 from commons.emoji import WARNING
-
-from commons.keys import ID
 from commons.keys import FLAG
+from commons.keys import ID
 from commons.keys import NAME
 from commons.keys import REGION
 from commons.keys import SYSTEM
+from db.mongo import GamesDatabase
 
 
 def validate(system, country=None):

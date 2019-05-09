@@ -4,19 +4,17 @@ import time
 
 import requests
 from flask import Flask
-from flask import request
 from flask import redirect
+from flask import request
 from flask import send_from_directory
 from flask_cors import CORS
 
 import api
 from bot.jobs import inbox
 from bot.jobs.main import check_last_update
-from web import generator
-
 from commons.settings import IP
 from commons.settings import PORT
-
+from web import generator
 
 LOG = logging.getLogger('main')
 

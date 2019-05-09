@@ -2,40 +2,39 @@ import os
 
 from commons.keys import ALIAS
 from commons.keys import API
-from commons.keys import CUT
-from commons.keys import CURRENCY
-from commons.keys import CURRENCY_CODE
-from commons.keys import DATA
-from commons.keys import DETAILS
-from commons.keys import DIGITS
-from commons.keys import FLAG
-from commons.keys import N3DS
-from commons.keys import NAME
-from commons.keys import REGION
-from commons.keys import SUBREDDITS
-from commons.keys import SWITCH
-from commons.keys import TAG
-from commons.keys import WEBSITE
 from commons.keys import AU
 from commons.keys import CA
 from commons.keys import CH
+from commons.keys import CURRENCY
+from commons.keys import CURRENCY_CODE
+from commons.keys import CUT
 from commons.keys import CZ
+from commons.keys import DATA
+from commons.keys import DETAILS
+from commons.keys import DIGITS
 from commons.keys import DK
 from commons.keys import EU
+from commons.keys import FLAG
 from commons.keys import GB
 from commons.keys import ID
 from commons.keys import JP
 from commons.keys import MX
+from commons.keys import N3DS
 from commons.keys import NA
+from commons.keys import NAME
 from commons.keys import NO
 from commons.keys import NZ
 from commons.keys import PL
+from commons.keys import REGION
 from commons.keys import RU
 from commons.keys import SE
+from commons.keys import SUBREDDITS
+from commons.keys import SWITCH
+from commons.keys import TAG
 from commons.keys import US
+from commons.keys import WEBSITE
 from commons.keys import ZA
 from commons.settings import USER_SUBREDDIT
-
 
 ESHOP_URL = 'https://ec.nintendo.com/{country}/{lang}/titles/{nsuid}'
 PRICE_API = 'https://api.ec.nintendo.com/v1/price?country={country}&lang=en&ids={ids}'

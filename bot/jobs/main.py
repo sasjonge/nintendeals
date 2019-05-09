@@ -7,7 +7,6 @@ from bot.jobs import wishlist as wishlist_job
 from bot.jobs.util import track
 from db.mongo import JobDatabase
 
-
 LOG = logging.getLogger('jobs')
 
 

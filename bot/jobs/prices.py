@@ -1,11 +1,8 @@
 import logging
 
 from bot.nintendo import prices
-
-from db.mongo import PricesDatabase
-
 from commons.config import COUNTRIES
-
+from db.mongo import PricesDatabase
 
 LOG = logging.getLogger('jobs.prices')
 

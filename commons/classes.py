@@ -1,22 +1,16 @@
 import logging
-
-from random import randint
 from datetime import datetime
 from datetime import timedelta
+from random import randint
 
 from commons.config import COUNTRIES
 from commons.config import REGIONS
-
+from commons.emoji import GEM
 from commons.emoji import NINTENDO
-
 from commons.keys import EU
 from commons.keys import NA
 from commons.keys import WEBSITE
-
 from commons.util import build_game_id
-
-
-ENABLE_METACRITIC = False
 
 
 class Singleton(type):
@@ -45,6 +39,8 @@ class Game:
         self.wishlisted = data.get('wishlisted', 0)
         self.wishlisted_history = data.get('wishlisted_history', {})
 
+        self.hidden_gem = data.get('hidden_gem', False)
+
         self.number_of_players = data.get('number_of_players', 0)
         self.published_by_nintendo = data.get('published_by_nintendo', False)
         self.categories = sorted(list(set(data.get('categories', []))))
@@ -69,6 +65,9 @@ class Game:
 
         if self.published_by_nintendo:
             self._title = f' {NINTENDO} {self._title}'
+
+        if self.hidden_gem:
+            self._title = f'{self._title} {GEM}'
 
         return self._title
 

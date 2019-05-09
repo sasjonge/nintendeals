@@ -3,9 +3,8 @@ from threading import Thread
 from flask import Blueprint
 from flask import Response
 
-from api.util import validate
 from api.util import INVALID_JOB
-
+from api.util import validate
 from bot.jobs import main as jobs
 
 TAG = 'jobs'

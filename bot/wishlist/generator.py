@@ -1,26 +1,19 @@
+from bot.wishlist.constants import NO_WISHLIST
+from bot.wishlist.constants import REMOVE_URL
+from bot.wishlist.constants import WISHLIST_EMPTY
+from commons.config import COUNTRIES
+from commons.config import SYSTEMS
+from commons.emoji import MINUS
+from commons.keys import CURRENCY_CODE
+from commons.keys import DIGITS
+from commons.keys import FLAG
+from commons.keys import ID
+from commons.settings import USER_SUBREDDIT
+from commons.settings import WEBSITE_URL
+from commons.util import format_float
 from db.mongo import GamesDatabase
 from db.mongo import RedditDatabase
 from db.mongo import WishlistDatabase
-
-from bot.wishlist.constants import NO_WISHLIST
-from bot.wishlist.constants import SEPARATOR
-from bot.wishlist.constants import WISHLIST_EMPTY
-from bot.wishlist.constants import REMOVE_URL
-
-from commons.config import COUNTRIES
-from commons.config import SYSTEMS
-
-from commons.emoji import MINUS
-
-from commons.keys import CURRENCY_CODE
-from commons.keys import DIGITS
-from commons.keys import ID
-from commons.keys import FLAG
-
-from commons.settings import USER_SUBREDDIT
-from commons.settings import WEBSITE_URL
-
-from commons.util import format_float
 
 
 def build_wishlist(username):

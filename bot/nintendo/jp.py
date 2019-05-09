@@ -5,16 +5,12 @@ import requests
 import xmltodict
 
 from bot.nintendo.util import get_game_id
-
 from commons.classes import Game
-
 from commons.config import REGIONS
-
 from commons.keys import API
 from commons.keys import DETAILS
 from commons.keys import JP
 from commons.keys import N3DS
-
 
 LOG = logging.getLogger('nintendo.jp')
 

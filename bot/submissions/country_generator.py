@@ -1,15 +1,16 @@
 from datetime import datetime
 
+from bot.submissions.common import SEPARATOR
+from bot.submissions.common import footer
+from bot.submissions.common import header
 from commons.config import COUNTRIES
-
-from commons.emoji import EMPTY
 from commons.emoji import EXP_TODAY
 from commons.emoji import EXP_TOMORROW
+from commons.emoji import GEM
 from commons.emoji import NEW
 from commons.emoji import NINTENDO
 from commons.emoji import STAR
 from commons.emoji import WARNING
-
 from commons.keys import CURRENCY
 from commons.keys import CURRENCY_CODE
 from commons.keys import DIGITS
@@ -17,16 +18,7 @@ from commons.keys import FLAG
 from commons.keys import ID
 from commons.keys import NAME
 from commons.keys import REGION
-from commons.keys import US, CH, NZ
-
-from commons.settings import WEBSITE_URL
-
 from commons.util import format_float
-
-
-from bot.submissions.common import SEPARATOR
-from bot.submissions.common import footer
-from bot.submissions.common import header
 
 
 def make_row(game, country, price, sale, disable_url=False):
@@ -36,6 +28,9 @@ def make_row(game, country, price, sale, disable_url=False):
 
     if game.published_by_nintendo:
         title = f'{NINTENDO} {title}'
+
+    if game.hidden_gem:
+        title = f'{title} {GEM}'
 
     if len(title) > 30:
         title = f'{title[:29]}…'.replace(' …', '…')

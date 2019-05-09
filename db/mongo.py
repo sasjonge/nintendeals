@@ -6,7 +6,6 @@ from commons.classes import Price
 from commons.classes import Singleton
 from commons.classes import Submission
 from commons.classes import Wishlist
-
 from commons.keys import ID
 from commons.settings import MONGODB_URI
 

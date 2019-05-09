@@ -2,7 +2,9 @@ NEW = u'✨'
 EXP_TODAY = u'❗'
 EXP_TOMORROW = u'❕'
 
+GEM = u'💎'
 NINTENDO = u'🍄'
+
 
 PLUS = u'➕'
 MINUS = u'➖'

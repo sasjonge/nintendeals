@@ -4,7 +4,6 @@ from datetime import datetime
 from db.mongo import GamesDatabase
 from db.mongo import PricesDatabase
 
-
 WEEKDAYS = {
     0: 'monday   ',
     1: 'tuesday  ',

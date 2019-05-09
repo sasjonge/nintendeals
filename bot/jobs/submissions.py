@@ -3,16 +3,11 @@ import logging
 from bot.reddit import Reddit
 from bot.submissions import country_generator
 from bot.submissions import main_generator
-
-from db.util import get_games_on_sale
-
 from commons.config import COUNTRIES
 from commons.config import SYSTEMS
-
 from commons.keys import SUBREDDITS
-
 from commons.settings import USER_SUBREDDIT
-
+from db.util import get_games_on_sale
 
 LOG = logging.getLogger('jobs.submissions')
 

@@ -1,8 +1,7 @@
-from db.mongo import GamesDatabase
-from db.mongo import PricesDatabase
-
 from commons.config import COUNTRIES
 from commons.keys import SYSTEM
+from db.mongo import GamesDatabase
+from db.mongo import PricesDatabase
 
 
 def get_games_on_sale(system=None):

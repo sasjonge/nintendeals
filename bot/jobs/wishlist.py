@@ -1,21 +1,15 @@
+import logging
 from datetime import datetime
 from datetime import timedelta
 
 from bot.reddit import Reddit
 from bot.wishlist import generator
-
-from db.mongo import WishlistDatabase
-from db.util import get_games_on_sale
-
 from bot.wishlist.constants import GAMES_ON_SALE
-
 from commons.config import COUNTRIES
-
 from commons.keys import ID
 from commons.keys import REGION
-
-import logging
-
+from db.mongo import WishlistDatabase
+from db.util import get_games_on_sale
 
 LOG = logging.getLogger('jobs.wishlist')
 

@@ -5,19 +5,15 @@ import requests
 
 from bot.nintendo.util import get_categories
 from bot.nintendo.util import get_game_id
-
 from commons.classes import Game
-
 from commons.config import COUNTRIES
 from commons.config import REGIONS
 from commons.config import SYSTEMS
-
 from commons.keys import ALIAS
 from commons.keys import API
 from commons.keys import EU
 from commons.keys import REGION
 from commons.keys import WEBSITE
-
 
 LOG = logging.getLogger('nintendo.eu')
 

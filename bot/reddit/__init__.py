@@ -4,17 +4,14 @@ from time import sleep
 
 from praw import Reddit as RedditApi
 
-from db.mongo import RedditDatabase
-
 from commons.classes import Singleton
 from commons.classes import Submission
-
 from commons.settings import REDDIT_CLIENTID
 from commons.settings import REDDIT_CLIENTSECRET
 from commons.settings import REDDIT_PASSWORD
 from commons.settings import REDDIT_USERAGENT
 from commons.settings import REDDIT_USERNAME
-
+from db.mongo import RedditDatabase
 
 LOG = logging.getLogger('reddit')
 

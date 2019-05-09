@@ -6,12 +6,9 @@ import requests
 
 from commons.classes import CountryPrice
 from commons.classes import Sale
-
 from commons.config import PRICE_API
-
 from commons.keys import ES
 from commons.keys import EU
-
 
 LOG = logging.getLogger('nintendo.prices')
 

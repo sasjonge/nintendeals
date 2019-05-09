@@ -1,17 +1,16 @@
 import logging
-from bot.reddit import Reddit
 
-from bot.wishlist.wishlist import add as wl_add
-from bot.wishlist.wishlist import remove as wl_remove
-from bot.wishlist.wishlist import show as wl_show
-from bot.wishlist.wishlist import delete as wl_delete
+from bot.reddit import Reddit
 from bot.wishlist.constants import SEPARATOR
 from bot.wishlist.constants import WL_ADD
 from bot.wishlist.constants import WL_DELETE
 from bot.wishlist.constants import WL_LIST
 from bot.wishlist.constants import WL_REMOVE
 from bot.wishlist.constants import WL_SHOW
-
+from bot.wishlist.wishlist import add as wl_add
+from bot.wishlist.wishlist import delete as wl_delete
+from bot.wishlist.wishlist import remove as wl_remove
+from bot.wishlist.wishlist import show as wl_show
 
 LOG = logging.getLogger('inbox')
 

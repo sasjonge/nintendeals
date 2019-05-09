@@ -1,11 +1,6 @@
 import logging
 from datetime import datetime
 
-from db.mongo import GamesDatabase
-from db.mongo import WishlistDatabase
-
-from bot.wishlist.generator import build_response
-
 from bot.wishlist.constants import GAME_ADDED
 from bot.wishlist.constants import GAME_REMOVED
 from bot.wishlist.constants import INVALID_COUNTRIES
@@ -17,12 +12,12 @@ from bot.wishlist.constants import WISHLIST_DELETED
 from bot.wishlist.constants import WISHLIST_EMPTY
 from bot.wishlist.constants import WISHLIST_FULL
 from bot.wishlist.constants import WISHLIST_SHOWED
-
+from bot.wishlist.generator import build_response
 from commons.classes import Wishlist
 from commons.classes import WishlistedGame
-
 from commons.config import COUNTRIES
-
+from db.mongo import GamesDatabase
+from db.mongo import WishlistDatabase
 
 LOG = logging.getLogger('wishlist')
 LIMIT = 50
