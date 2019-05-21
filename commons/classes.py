@@ -126,15 +126,15 @@ class Score:
 
     @property
     def score(self):
-        total = []
+        scores = []
 
         if self.metascore not in [None, self.NO_SCORE]:
-            total.append(self.metascore)
+            scores.append(int(self.metascore))
 
         if self.userscore not in [None, self.NO_SCORE]:
-            total.append(self.userscore * 10)
+            scores.append(f'{self.userscore:.1f}')
 
-        return int(sum(total) / len(total)) if len(total) else self.NO_SCORE
+        return '/'.join(scores) if len(scores) else self.NO_SCORE
 
     def __repr__(self):
         return f'{self.metascore}/{self.userscore}'
