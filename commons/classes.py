@@ -130,11 +130,15 @@ class Score:
 
         if self.metascore not in [None, self.NO_SCORE]:
             scores.append(str(self.metascore))
-
+        else:
+            scores.append(self.NO_SCORE)
+        
         if self.userscore not in [None, self.NO_SCORE]:
             scores.append(f'{self.userscore:.1f}')
+        else:
+            scores.append(self.NO_SCORE)
 
-        return '/'.join(scores) if len(scores) else self.NO_SCORE
+        return '/'.join(scores)
 
     def __repr__(self):
         return f'{self.metascore}/{self.userscore}'
