@@ -129,7 +129,7 @@ class Score:
         scores = []
 
         if self.metascore not in [None, self.NO_SCORE]:
-            scores.append(int(self.metascore))
+            scores.append(str(self.metascore))
 
         if self.userscore not in [None, self.NO_SCORE]:
             scores.append(f'{self.userscore:.1f}')
