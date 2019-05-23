@@ -70,7 +70,7 @@ def make_row(game, country, price, sale, disable_url=False):
 
     return f'{bold}{title}{bold}|{emoji}|{formatted_time}|' \
         f'{country[CURRENCY]}{sale_price} ~~{full_price}~~|`{sale.discount}`|' \
-        f'{game.players}|{game.scores.score}|' \
+        f'{game.players}|{game.scores.metascore}|{game.scores.userscore}|' \
         f'{game.wishlisted if game.wishlisted else "-"}'
 
 
@@ -78,8 +78,8 @@ def make_tables(games, prices, system, country, disable_current_urls=False, disa
     now = datetime.utcnow()
 
     header = [
-        f'Title | - | Expiration | {country[CURRENCY]} ({country[CURRENCY_CODE]}) | % | Players | Score | {STAR}',
-        '--- | :---: | --- | :---: | :---: | :---: | :---: | :---:'
+        f'Title | - | Expiration | {country[CURRENCY]} ({country[CURRENCY_CODE]}) | % | Players | MS | US | {STAR}',
+        '--- | :---: | --- | :---: | :---: | :---: | :---: | :---: | :---:'
     ]
 
     new_sales = []

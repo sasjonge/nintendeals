@@ -28,15 +28,15 @@ def make_row(game, countries_with_sale, avg_discount):
     if len(title) > 35:
         title = f'{title[:34]}…'.replace(' …', '…')
 
-    return f'{title}|{countries}|`{int(avg_discount)}`|{game.scores.score}|{game.wishlisted}'
+    return f'{title}|{countries}|`{int(avg_discount)}`|{game.scores.metascore}|{game.scores.userscore}|{game.wishlisted}'
 
 
 def make_table(games, prices, system):
     games = sorted(games.values(), key=lambda x: x.wishlisted, reverse=True)
 
     content = [
-        f'Title | Countries/Regions | % | Score | {STAR} ',
-        '--- | --- | :---: | :---: | :---:'
+        f'Title | Countries/Regions | % | MS | US | {STAR} ',
+        '--- | --- | :---: | :---: | :---: | :---:'
     ]
 
     for game in games[:30]:

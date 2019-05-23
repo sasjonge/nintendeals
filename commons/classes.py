@@ -115,8 +115,16 @@ class Score:
         if days:
             days += randint(1, days)
 
-        self.metascore = data.get('metascore', self.NO_SCORE)
-        self.userscore = data.get('userscore', self.NO_SCORE)
+        self.metascore = data.get('metascore')
+
+        if not self.metascore:
+            self.metascore = self.NO_SCORE
+
+        self.userscore = data.get('userscore')
+
+        if not self.userscore:
+            self.userscore = self.NO_SCORE
+
         self.next_update = data.get('next_update', datetime.utcnow() + timedelta(days=days))
 
     def dump(self):
