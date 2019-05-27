@@ -39,21 +39,22 @@ def update_prices():
                 price.prices[country] = country_price
                 save = True
 
-            country_price = price.prices[country]
+            country_pricing = price.prices[country]
+            country_pricing.full_price = country_price.full_price
 
             if sale:
-                sale_db = country_price.latest_sale
+                sale_db = country_pricing.latest_sale
 
                 if sale_db:
                     if sale.start_date > sale_db.end_date:
-                        country_price.sales.append(sale)
+                        country_pricing.sales.append(sale)
                         price.prices[country].latest_sale = sale
 
                         save = True
                         LOG.info(f'New sale found for {nsuid} ({sale.discount}%)')
                         deals_found += 1
                 else:
-                    country_price.sales.append(sale)
+                    country_pricing.sales.append(sale)
                     price.prices[country].latest_sale = sale
 
                     save = True
