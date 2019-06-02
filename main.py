@@ -12,6 +12,7 @@ from flask_cors import CORS
 import api
 from bot.jobs import inbox
 from bot.jobs.main import check_last_update
+from bot.reddit import Reddit
 from commons.settings import IP
 from commons.settings import PORT
 from web import generator
@@ -130,6 +131,8 @@ def start_runner():
 # Main ========================================================================
 
 if __name__ == "__main__":
+    Reddit()
+
     logging.basicConfig(level=logging.INFO)
 
     start_runner()

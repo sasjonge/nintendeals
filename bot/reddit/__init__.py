@@ -6,11 +6,14 @@ from praw import Reddit as RedditApi
 
 from commons.classes import Singleton
 from commons.classes import Submission
+from commons.settings import REDDIT_USERNAME
+from commons.settings import REDDIT_PASSWORD
 from commons.settings import REDDIT_CLIENTID
 from commons.settings import REDDIT_CLIENTSECRET
-from commons.settings import REDDIT_PASSWORD
 from commons.settings import REDDIT_USERAGENT
-from commons.settings import REDDIT_USERNAME
+from commons.settings import REDDIT_REFRESH_CODE
+from commons.settings import REDDIT_REFRESH_TOKEN
+from commons.settings import REDDIT_REDIRECT_URL
 from db.mongo import RedditDatabase
 
 LOG = logging.getLogger('reddit')
@@ -27,12 +30,28 @@ class Reddit(metaclass=Singleton):
 
     def __init__(self):
         self.api = RedditApi(
-            username=REDDIT_USERNAME,
-            password=REDDIT_PASSWORD,
+            # username=REDDIT_USERNAME,
+            # password=REDDIT_PASSWORD,
             client_id=REDDIT_CLIENTID,
             client_secret=REDDIT_CLIENTSECRET,
-            user_agent=REDDIT_USERAGENT
+            user_agent=REDDIT_USERAGENT,
+            refresh_token=REDDIT_REFRESH_TOKEN,
+            redirect_uri=REDDIT_REDIRECT_URL,
         )
+
+        if REDDIT_REFRESH_TOKEN:
+            print(f'Logged in with: {self.api.user.me()}')
+            return
+
+        if not REDDIT_REFRESH_CODE:
+            url = self.api.auth.url(['*'], 2205, 'permanent')
+            print(f'Missing refresh token, go with {REDDIT_USERNAME} to the url:\n{url}')
+        else:
+            refresh_token = self.api.auth.authorize(REDDIT_REFRESH_CODE)
+            print(f'Code validated. Refresh token: {refresh_token}')
+
+        sleep(15)
+        exit()
 
     def inbox(self):
         return [message for message in self.api.inbox.unread() if not message.was_comment][:5]
@@ -42,7 +61,7 @@ class Reddit(metaclass=Singleton):
             LOG.info(f'Sending to {username}: {title}')
 
             self.api.redditor(username).message(title, content)
-            sleep(5)
+            sleep(15)
         except:
             LOG.error(f'Error sending to {username}: {title}')
 
@@ -52,9 +71,9 @@ class Reddit(metaclass=Singleton):
 
             message.reply(content)
             message.mark_read()
-            sleep(5)
-        except:
-            LOG.error(f'Error replying to {message.author.name}: {message.subject}')
+            sleep(15)
+        except Exception as e:
+            LOG.error(f'Error replying to {message.author.name}: {message.subject} > {e}')
 
     def usable(self, sub, country=None):
         if not sub:
@@ -200,4 +219,3 @@ class Reddit(metaclass=Singleton):
         sleep(5)
 
         return sub
-
