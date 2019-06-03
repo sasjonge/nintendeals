@@ -29,6 +29,8 @@ def unknown(message, _):
 
 
 def check():
+    return  # TODO Disabled
+
     LOG.info('checking inbox')
     reddit = Reddit()
 

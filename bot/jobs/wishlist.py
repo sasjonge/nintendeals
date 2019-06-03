@@ -15,6 +15,8 @@ LOG = logging.getLogger('jobs.wishlist')
 
 
 def notify_users():
+    return  # TODO Disabled
+
     notified_users = 0
 
     reddit = Reddit()
