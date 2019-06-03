@@ -28,3 +28,6 @@ POLL = os.environ.get('POLL', None)
 
 
 WEBSITE_URL = 'http://bot.nintendeals.xyz'
+
+
+MAINTENANCE = os.environ.get('MAINTENANCE', 'false').lower() == 'true'

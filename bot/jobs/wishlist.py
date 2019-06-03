@@ -15,7 +15,7 @@ LOG = logging.getLogger('jobs.wishlist')
 
 
 def notify_users():
-    return  # TODO Disabled
+    return 'DISABLED'  # TODO Disabled
 
     notified_users = 0
 

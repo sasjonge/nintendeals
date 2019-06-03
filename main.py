@@ -131,8 +131,6 @@ def start_runner():
 # Main ========================================================================
 
 if __name__ == "__main__":
-    Reddit()
-
     logging.basicConfig(level=logging.INFO)
 
     start_runner()

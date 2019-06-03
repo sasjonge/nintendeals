@@ -7,6 +7,7 @@ from bot.wishlist.constants import DELETE_URL
 from bot.wishlist.constants import SHOW_URL
 from commons.config import COUNTRIES
 from commons.config import SYSTEMS
+from commons.settings import MAINTENANCE
 from commons.emoji import NINTENDO
 from commons.emoji import PLUS
 from commons.emoji import STAR
@@ -37,6 +38,9 @@ def validate(system, country=None):
 
 
 def index():
+    if MAINTENANCE:
+        return render_template('maintenance.html')
+
     return render_template(
         'index.html',
         systems=sorted([system[ID] for system in SYSTEMS.values()]),
@@ -49,6 +53,9 @@ def index():
 
 
 def wishlist(system, country):
+    if MAINTENANCE:
+        return render_template('maintenance.html')
+
     try:
         system, country = validate(system, country)
     except:
@@ -92,6 +99,9 @@ def wishlist(system, country):
 
 
 def top_wishlist(system, limit=50):
+    if MAINTENANCE:
+        return render_template('maintenance.html')
+
     system, _ = validate(system)
 
     games = GamesDatabase().load_all(
