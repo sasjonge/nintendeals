@@ -61,7 +61,7 @@ class Reddit(metaclass=Singleton):
             LOG.info(f'Sending to {username}: {title}')
 
             self.api.redditor(username).message(title, content)
-            sleep(15)
+            sleep(5)
         except:
             LOG.error(f'Error sending to {username}: {title}')
 
@@ -71,7 +71,7 @@ class Reddit(metaclass=Singleton):
 
             message.reply(content)
             message.mark_read()
-            sleep(15)
+            sleep(5)
         except Exception as e:
             LOG.error(f'Error replying to {message.author.name}: {message.subject} > {e}')
 
