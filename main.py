@@ -1,6 +1,6 @@
 import logging
-import threading
 import time
+from threading import Thread
 
 import requests
 from flask import Flask
@@ -93,15 +93,16 @@ def css(resource, path):
 @app.before_first_request
 def activate_job():
     def run_job():
-        check_last_update()
+        last_update_thread = Thread(target=check_last_update)
+        last_update_thread.start()
 
         while True:
             inbox.check()
 
             time.sleep(10)
 
-    thread = threading.Thread(target=run_job)
-    thread.start()
+    run_job_thread = Thread(target=run_job)
+    run_job_thread.start()
 
 
 def start_runner():
@@ -125,7 +126,8 @@ def start_runner():
             time.sleep(1)
 
     print('Started runner')
-    threading.Thread(target=start_loop).start()
+    start_loop_thread = Thread(target=start_loop)
+    start_loop_thread.start()
 
 
 # Main ========================================================================
