@@ -25,7 +25,7 @@ AMERICA = REGIONS[NA]
 
 FIXES = {
     "70010000019385": "70010000000529", 
-    "Splatoon 2 + Nintendo Switch Online Individual Membership (12 Months)" : "Splatoon 2"
+    "Splatoon 2 + Nintendo Switch Online Individual Membership (12 Months)": "Splatoon 2"
 }
 
 CACHE = set()
@@ -116,7 +116,12 @@ def extract_game_data(system, slug):
     if len(nsuid) < 10 or len(game_code) < 7:
         return None
 
-    title = data.get('title')
+    title = data.get('title')\
+        .replace('\\u002D', '-')\
+        .replace('\\x22', '"') \
+        .replace('\\x26', '&') \
+        .replace('\\x27', "'")\
+        .strip()
 
     game_id = get_game_id(nsuid=nsuid, game_id=game_code)
 
@@ -132,8 +137,11 @@ def extract_game_data(system, slug):
             game.websites[country] = details[WEBSITE].format(nsuid=nsuid)
 
     try:
-        game.release_dates[NA] = datetime.strptime(data.get('releaseDate'), '%b %d, %Y')
-    except:
+        game.release_dates[NA] = datetime.strptime(
+            soup.find('dd', {'itemprop': 'releaseDate'}).text.strip(),
+            '%b %d, %Y'
+        )
+    except Exception as e:
         return None
 
     try:

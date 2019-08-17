@@ -13,6 +13,7 @@ import api
 from bot.jobs import inbox
 from bot.jobs.main import check_last_update
 from bot.reddit import Reddit
+from cache import cache
 from commons.settings import IP
 from commons.settings import PORT
 from web import generator
@@ -26,6 +27,8 @@ def register_blueprint(application, blueprint):
 
 app = Flask(__name__)
 CORS(app)
+cache.init_app(app, config={"CACHE_TYPE": "simple"})
+
 
 # Api =========================================================================
 
@@ -35,6 +38,7 @@ def hello():
     return "🌿 Yahaha! You found me! 🌿"
 
 
+register_blueprint(app, api.games.blueprint)
 register_blueprint(app, api.jobs.blueprint)
 
 
@@ -51,10 +55,10 @@ def index():
     return generator.index()
 
 
-@app.route("/top/wishlist/<string:system>")
-def top_wishlist(system):
-    limit = int(request.args.get('limit', '50'))
-    response = generator.top_wishlist(system, limit)
+@app.route("/wishlist/<string:system>/<string:country>")
+@cache.cached(timeout=60 * 60)
+def wishlist(system, country):
+    response = generator.wishlist(system, country)
 
     if not response:
         return redirect("/", code=302)
@@ -62,9 +66,10 @@ def top_wishlist(system):
         return response
 
 
-@app.route("/wishlist/<string:system>/<string:country>")
-def wishlist(system, country):
-    response = generator.wishlist(system, country)
+@app.route("/top/wishlist/<string:system>")
+def top_wishlist(system):
+    limit = int(request.args.get('limit', '50'))
+    response = generator.top_wishlist(system, limit)
 
     if not response:
         return redirect("/", code=302)

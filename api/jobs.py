@@ -4,7 +4,7 @@ from flask import Blueprint
 from flask import Response
 
 from api.util import INVALID_JOB
-from api.util import validate
+from api.util import validate_api_key
 from bot.jobs import main as jobs
 
 TAG = 'jobs'
@@ -23,7 +23,7 @@ JOBS = {
 
 @blueprint.route('/<string:name>', methods=['GET'])
 def run(name):
-    message = validate()
+    message = validate_api_key()
 
     if message:
         return message

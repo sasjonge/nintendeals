@@ -9,6 +9,7 @@ IP = '127.0.0.1' if PORT == 5000 else '0.0.0.0'
 
 
 API_KEY = os.environ.get('API_KEY', 'test')
+PUBLIC_KEY = os.environ.get('PUBLIC_KEY', 'test')
 
 
 REDDIT_USERNAME = os.environ.get('REDDIT_USERNAME')

@@ -5,6 +5,7 @@ import flask
 from flask import Response
 
 from commons.settings import API_KEY
+from commons.settings import PUBLIC_KEY
 
 Error = namedtuple('Error', ['message', 'mimetype', 'code'])
 
@@ -22,10 +23,19 @@ INVALID_JOB = Error(
 )
 
 
-def validate():
+def validate_api_key():
     api_key = flask.request.args.get('api_key')
 
     if api_key != API_KEY:
+        return Response(INVALID_API_KEY.message, mimetype=INVALID_API_KEY.mimetype, status=INVALID_API_KEY.code)
+
+    return None
+
+
+def validate_public_key():
+    api_key = flask.request.args.get('api_key')
+
+    if api_key != PUBLIC_KEY:
         return Response(INVALID_API_KEY.message, mimetype=INVALID_API_KEY.mimetype, status=INVALID_API_KEY.code)
 
     return None
