@@ -185,6 +185,9 @@ class CountryPrice:
         if not self.latest_sale:
             return None
 
+        if self.latest_sale.discount < 1:
+            return None
+
         return self.latest_sale if self.latest_sale.active else None
 
     def dump(self):
