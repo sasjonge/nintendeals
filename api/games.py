@@ -59,6 +59,7 @@ def list_games(system):
         tmp_game = {
             'titles': game.titles,
             'nsuids': game.nsuids,
+            'release_dates': game.release_date,
             'price': tmp_prices,
             'scores': {
                 'metascore': game.scores.metascore,
