@@ -205,7 +205,7 @@ class Reddit(metaclass=Singleton):
                 subreddit=subreddit,
                 system=system,
                 title=title,
-                days_to_expire=14 if country else 165
+                days_to_expire=60 if country else 165
             )
 
             LOG.info(f'Submission created: {sub}')
