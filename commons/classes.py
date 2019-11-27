@@ -91,7 +91,7 @@ class Game:
         elif self.number_of_players in [1]:
             return '1'
         else:
-            return f'1-{self.number_of_players}'
+            return f'{self.number_of_players}'
 
     def dump(self):
         tmp = self.__dict__.copy()

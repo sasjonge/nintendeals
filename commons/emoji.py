@@ -4,7 +4,7 @@ EXP_TOMORROW = u'❕'
 
 GEM = u'💎'
 NINTENDO = u'🍄'
-
+PLAYERS = u'🎮'
 
 PLUS = u'➕'
 MINUS = u'➖'

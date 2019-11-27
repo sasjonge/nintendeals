@@ -37,6 +37,7 @@ def update_submissions():
                 updated_submissions += 1
             except Exception as e:
                 print(content)
+                LOG.error(f'Error with post for {country}: {len(content)} characters')
                 raise e
 
         title, content = main_generator.generate(games, sales, submissions, system)

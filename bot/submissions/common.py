@@ -4,23 +4,27 @@ from commons.emoji import EXP_TODAY
 from commons.emoji import EXP_TOMORROW
 from commons.emoji import NEW
 from commons.emoji import NINTENDO
+from commons.emoji import PLAYERS
 from commons.emoji import STAR
 from commons.settings import WEBSITE_URL
 
 SEPARATOR = '\n___\n'
 
 
-def header(system=None, country=None):
+def header(system=None, country=None, disable_players=False):
 
     header = []
 
     if system:
-        header.append(f'>`{NEW} new` ')
-        header.append(f'`{EXP_TOMORROW} expires tomorrow` ')
-        header.append(f'`{EXP_TODAY} expires today` ')
+        header.append(f'> `{NEW} new`\n')
+        header.append(f'> `{EXP_TOMORROW} expires tomorrow`\n')
+        header.append(f'> `{EXP_TODAY} expires today`\n')
 
-    header.append(f'`{STAR} wishlist count` ')
-    header.append(f'`{NINTENDO} published by nintendo`')
+    if not disable_players:
+        header.append(f'> `{PLAYERS} max players`\n')
+
+    header.append(f'> `{STAR} wishlist count`\n')
+    header.append(f'> `{NINTENDO} published by nintendo`\n')
     header.append(SEPARATOR)
 
     if system:
