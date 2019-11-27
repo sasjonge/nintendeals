@@ -21,7 +21,7 @@ from commons.keys import REGION
 from commons.util import format_float
 
 
-def make_row(game, country, price, sale, disable_url=False):
+def make_row(game, country, price, sale, disable_bold=False, disable_url=False):
     now = datetime.utcnow()
 
     title = game.titles.get(country[REGION], game.title)
@@ -41,7 +41,7 @@ def make_row(game, country, price, sale, disable_url=False):
 
     new = (now - sale.start_date).days < 1
 
-    bold = '**' if new else ''
+    bold = '**' if new and not disable_bold else ''
     emoji = NEW if new else ''
 
     time_left = sale.end_date - now
@@ -74,7 +74,7 @@ def make_row(game, country, price, sale, disable_url=False):
         f'{game.wishlisted if game.wishlisted else "-"}'
 
 
-def make_tables(games, prices, system, country, disable_current_urls=False, disable_new_urls=False):
+def make_tables(games, prices, system, country, disable_bold=False, disable_current_urls=False, disable_new_urls=False):
     now = datetime.utcnow()
 
     header = [
@@ -115,11 +115,11 @@ def make_tables(games, prices, system, country, disable_current_urls=False, disa
         days = (now - latest_sale.start_date).days
 
         if days < 1:
-            new_sales.append(make_row(game, country, price, latest_sale, disable_url=disable_new_urls))
+            new_sales.append(make_row(game, country, price, latest_sale, disable_bold=False, disable_url=disable_new_urls))
         elif now.strftime("%V") == latest_sale.start_date.strftime("%V"):
-            week_sales.append(make_row(game, country, price, latest_sale, disable_url=disable_new_urls))
+            week_sales.append(make_row(game, country, price, latest_sale, disable_bold=False, disable_url=disable_new_urls))
         else:
-            current_sales.append(make_row(game, country, price, latest_sale, disable_url=disable_current_urls))
+            current_sales.append(make_row(game, country, price, latest_sale, disable_bold=False, disable_url=disable_current_urls))
 
         games_on_sale += 1
 
@@ -135,13 +135,23 @@ def generate(games, prices, system, country):
 
     if len(''.join(week_sales)) + len(''.join(current_sales)) > 35000:
         week_sales, current_sales, total_sales = \
+            make_tables(games, prices, system, country, disable_bold=True)
+
+    if len(''.join(week_sales)) + len(''.join(current_sales)) > 35000:
+        week_sales, current_sales, total_sales = \
             make_tables(games, prices, system, country, disable_current_urls=True)
 
         disabled_urls = True
 
     if len(''.join(week_sales)) + len(''.join(current_sales)) > 35000:
         week_sales, current_sales, total_sales = \
-            make_tables(games, prices, system, country, disable_current_urls=True, disable_new_urls=True)
+            make_tables(games, prices, system, country, disable_bold=True, disable_current_urls=True)
+
+        disabled_urls = True
+
+    if len(''.join(week_sales)) + len(''.join(current_sales)) > 35000:
+        week_sales, current_sales, total_sales = \
+            make_tables(games, prices, system, country, disable_bold=True, disable_current_urls=True, disable_new_urls=True)
 
         disabled_urls = True
 
