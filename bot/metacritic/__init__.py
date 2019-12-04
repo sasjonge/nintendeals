@@ -52,7 +52,7 @@ def extract_score(soup, tag, properties, cast=float):
     result = soup.find(tag, properties)
 
     try:
-        return cast(result.contents[0])
+        return cast(result.text)
     except:
         return None
 
@@ -70,8 +70,18 @@ def _get_scores(system, title):
 
     score = Score(days=14)
 
-    score.metascore = extract_score(soup, 'span', {'itemprop': 'ratingValue'}, cast=int)
-    score.userscore = extract_score(soup, 'div', {'class': lambda value: value and value.startswith('metascore_w user')})
+    score.metascore = extract_score(
+        soup,
+        'div',
+        {'class': lambda value: value and value.startswith('metascore_w xlarge game')},
+        cast=int
+    )
+
+    score.userscore = extract_score(
+        soup,
+        'div',
+        {'class': lambda value: value and value.startswith('metascore_w user large game')}
+    )
 
     return score
 
