@@ -172,7 +172,7 @@ def generate(games, prices, system, country):
 
     modifiers = {}
 
-    for modifier in ['unused', 'disable_formatting', 'disable_current_urls', 'disable_new_urls', 'disable_soon_to_expire', 'disable_full_prices', 'disable_players']:
+    for modifier in ['unused', 'disable_formatting', 'disable_current_urls', 'disable_new_urls', 'disable_full_prices', 'disable_players']:
         modifiers[modifier] = True
 
         week_sales, current_sales, total_sales = make_tables(games, prices, system, country, **modifiers)
