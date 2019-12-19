@@ -39,7 +39,7 @@ def make_table(games, prices, system):
         '--- | --- | :---: | :---: | :---: | :---:'
     ]
 
-    for game in games[:30]:
+    for game in games[:50]:
         if game.system != system:
             continue
 

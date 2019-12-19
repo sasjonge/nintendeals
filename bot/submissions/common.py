@@ -27,9 +27,6 @@ def header(system=None, country=None, disable_players=False):
     header.append(f'> `{NINTENDO} published by nintendo`\n')
     header.append(SEPARATOR)
 
-    if system:
-        header.append(f'You can add games to your wishlist [HERE]({WEBSITE_URL}/wishlist/{system.lower()}/{country.lower()})')
-
     return header
 
 
@@ -43,10 +40,6 @@ def footer(system=None, country=None):
         '* Developed by /u/uglyasablasphemy',
         '  * [Switch Friend Code](https://nin.codes/uglyasablasphemy)',
         '  * [GitHub](https://github.com/federicocalendino/nintendeals)',
-        '* [RES](https://redditenhancementsuite.com) is recommended for table sorting on desktop',
-        '* If you have perfomance issues, you might want to check out:',
-        '  * [Reddit is Fun](https://play.google.com/store/apps/details?id=com.andrewshu.android.reddit)',
-        '  * [Apollo for Reddit](https://itunes.apple.com/us/app/apollo-for-reddit/id979274575)',
         SEPARATOR,
         f'Last update: [{timestamp}](https://google.com/search?q={time})',
         SEPARATOR

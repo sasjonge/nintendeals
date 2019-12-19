@@ -33,7 +33,7 @@ def make_row(game, country, price, sale, disable_url=False, **kwargs):
     if game.hidden_gem:
         title = f'{title} {GEM}'
 
-    if len(title) > 27:
+    if len(title) > 25:
         title = f'{title[:26]}…'.replace(' …', '…')
 
     if not disable_url:
@@ -42,7 +42,7 @@ def make_row(game, country, price, sale, disable_url=False, **kwargs):
 
     new = (now - sale.start_date).days < 1
 
-    if not kwargs.get('disable_formatting', False):
+    if not kwargs.get('disable_title_formatting', False):
         bold = '**' if new else ''
     else:
         bold = ''
@@ -70,9 +70,14 @@ def make_row(game, country, price, sale, disable_url=False, **kwargs):
             formatted_time = f'{formatted_time} ({minutes}m)'
 
     country_price = price.prices[country[ID]]
-    sale_price = format_float(sale.sale_price, country[DIGITS])
 
-    full_price = format_float(country_price.full_price, country[DIGITS])
+    if not kwargs.get('disable_extra_zeros', False):
+        digits = country[DIGITS]
+    else:
+        digits = 0
+
+    sale_price = format_float(sale.sale_price, digits)
+    full_price = format_float(country_price.full_price, digits)
 
     if not kwargs.get('disable_full_prices', False):
         full_price = f' ~~{full_price}~~'
@@ -83,29 +88,57 @@ def make_row(game, country, price, sale, disable_url=False, **kwargs):
     metascore = game.scores.metascore if game.scores.metascore != '-' else ''
     userscore = game.scores.userscore if game.scores.userscore != '-' else ''
 
-    if kwargs.get('disable_players'):
-        return f'{bold}{title}{bold}|{emoji}|{formatted_time}|' \
-               f'{country[CURRENCY]}{sale_price}{full_price}|`{sale.discount}`|' \
-               f'{metascore}|{userscore}|' \
-               f'{wishlisted}'
+    row = f'{bold}{title}{bold}|{emoji}|{formatted_time}|' \
+          f'{sale_price}{full_price}'
+
+    if not kwargs.get('disable_discount_formatting', False):
+        row += f'|`{sale.discount}`'
     else:
-        return f'{bold}{title}{bold}|{emoji}|{formatted_time}|' \
-            f'{country[CURRENCY]}{sale_price}{full_price}|`{sale.discount}`|' \
-            f'{game.players}|{metascore}|{userscore}|' \
-            f'{wishlisted}'
+        row += f'|{sale.discount}'
+
+    if not kwargs.get('disable_players', False):
+        row += f'|{game.players}'
+
+    if not kwargs.get('disable_scores', False):
+        row += f'|{metascore}|{userscore}'
+
+    if not kwargs.get('disable_wishlisted', False):
+        row += f'|{wishlisted}'
+
+    return row
 
 
 def make_tables(games, prices, system, country, **kwargs):
     now = datetime.utcnow()
 
-    header = [
-        f'Title | - | Expiration | {country[CURRENCY]} ({country[CURRENCY_CODE]}) | % | {PLAYERS} | MS | US | {STAR}',
-        '--- | :---: | --- | :---: | :---: | :---: | :---: | :---: | :---:'
-    ]
+    table_columns = 'Title '
+    table_separators = '--- '
 
-    if kwargs.get('disable_players'):
-        header[0] = header[0].replace(f' {PLAYERS} |', '')
-        header[1] = header[1][:-8]
+    table_columns += '| - '
+    table_separators += '| :---: '
+
+    table_columns += '| Expiration '
+    table_separators += '| --- '
+
+    table_columns += f'| {country[CURRENCY_CODE]}s '
+    table_separators += '| :---: '
+
+    table_columns += f'| % '
+    table_separators += '| :---: '
+
+    if not kwargs.get('disable_players', False):
+        table_columns += f'| {PLAYERS} '
+        table_separators += '| :---: '
+
+    if not kwargs.get('disable_scores', False):
+        table_columns += '| MS | US '
+        table_separators += '| :---: | :---: '
+
+    if not kwargs.get('disable_wishlisted', False):
+        table_columns += f'| {STAR}'
+        table_separators += '| :---:'
+
+    header = [table_columns, table_separators]
 
     new_sales = []
     week_sales = []
@@ -146,16 +179,13 @@ def make_tables(games, prices, system, country, **kwargs):
                 continue
 
         if days < 1:
-            row = make_row(game, country, price, latest_sale,
-                           disable_url=kwargs.get('disable_new_urls', False), **kwargs)
+            row = make_row(game, country, price, latest_sale, disable_url=kwargs.get('disable_new_urls', False), **kwargs)
             new_sales.append(row)
         elif now.strftime("%V") == latest_sale.start_date.strftime("%V"):
-            row = make_row(game, country, price, latest_sale,
-                           disable_url=kwargs.get('disable_new_urls', False), **kwargs)
+            row = make_row(game, country, price, latest_sale, disable_url=kwargs.get('disable_new_urls', False), **kwargs)
             week_sales.append(row)
         else:
-            row = make_row(game, country, price, latest_sale,
-                           disable_url=kwargs.get('disable_current_urls', False), **kwargs)
+            row = make_row(game, country, price, latest_sale, disable_url=kwargs.get('disable_current_urls', False), **kwargs)
             current_sales.append(row)
 
         games_on_sale += 1
@@ -172,23 +202,26 @@ def generate(games, prices, system, country):
 
     modifiers = {}
 
-    for modifier in ['unused', 'disable_formatting', 'disable_current_urls', 'disable_new_urls', 'disable_full_prices', 'disable_players', 'disable_soon_to_expire']:
+    for modifier in [
+        'unused',
+        'disable_title_formatting',
+        'disable_current_urls',
+        'disable_new_urls',
+        'disable_full_prices',
+        'disable_players',
+        'disable_wishlisted',
+        'disable_scores',
+        'disable_soon_to_expire',
+        'disable_discount_formatting',
+        'disable_extra_zeros',
+    ]:
         modifiers[modifier] = True
 
         week_sales, current_sales, total_sales = make_tables(games, prices, system, country, **modifiers)
 
         size = len(''.join(week_sales)) + len(''.join(current_sales))
 
-        if modifier in ['disable_current_urls', 'disable_new_urls']:
-            disabled_urls = True
-
-        if modifier in ['disable_full_prices']:
-            disable_full_prices = True
-
-        if modifier in ['disable_players']:
-            disable_players = True
-
-        if size < 39000:
+        if size < 38000:
             break
 
     title = f'{country[FLAG]} {country[ID]} ▪️ Current Nintendo {system} eShop deals'
@@ -216,12 +249,14 @@ def generate(games, prices, system, country):
 
         content.append('')
 
-        if disabled_urls:
+        if modifiers.get('disable_current_urls', False):
             content.append('* urls')
-        if disable_full_prices:
+        if modifiers.get('disable_full_prices', False):
             content.append('* full prices')
-        if disable_players:
+        if modifiers.get('disable_players', False):
             content.append('* number of players')
+        if modifiers.get('disable_scores', False):
+            content.append('* metacritic scores')
 
     content.append('')
 
