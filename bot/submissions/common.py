@@ -20,8 +20,8 @@ def header(system=None, country=None, disable_players=False):
         header.append(f'> `{EXP_TOMORROW} expires tomorrow`\n')
         header.append(f'> `{EXP_TODAY} expires today`\n')
 
-    if not disable_players:
-        header.append(f'> `{PLAYERS} max players`\n')
+        if not disable_players:
+            header.append(f'> `{PLAYERS} max players`\n')
 
     header.append(f'> `{STAR} wishlist count`\n')
     header.append(f'> `{NINTENDO} published by nintendo`\n')
