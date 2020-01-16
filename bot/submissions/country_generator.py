@@ -31,7 +31,7 @@ def make_row(game, country, price, sale, disable_url=False, **kwargs):
         title = f'{NINTENDO} {title}'
 
     if game.hidden_gem:
-        title = f'{title} {GEM}'
+        title = f'{GEM} {title}'
 
     if len(title) > 25:
         title = f'{title[:26]}…'.replace(' …', '…')
@@ -196,10 +196,6 @@ def make_tables(games, prices, system, country, **kwargs):
 def generate(games, prices, system, country):
     country = COUNTRIES[country]
 
-    disabled_urls = False
-    disable_full_prices = False
-    disable_players = False
-
     modifiers = {}
 
     for modifier in [
@@ -230,7 +226,14 @@ def generate(games, prices, system, country):
         f'#{country[NAME]}: {total_sales} deals\n'
     ]
 
-    content.extend(header(system, country[ID], disable_players=disable_players))
+    content.extend(
+        header(
+            system=system,
+            country=country[ID],
+            disable_players=modifiers.get('disable_players', False),
+            disable_wishlisted=modifiers.get('disable_wishlisted', False)
+        )
+    )
 
     if len(week_sales) > 2:
         content.append(f'##Deals of this week: {len(week_sales) - 2} deals\n')
@@ -244,7 +247,12 @@ def generate(games, prices, system, country):
 
     content.append('')
 
-    if any((disabled_urls, disable_full_prices, disable_players)):
+    if any((
+            modifiers.get('disable_current_urls', False),
+            modifiers.get('disable_full_prices', False),
+            modifiers.get('disable_players', False),
+            modifiers.get('disable_scores', False),
+    )):
         content.append(f'{WARNING} some information is missing to fit eveything into reddit\'s 40k character limit\n')
 
         content.append('')
