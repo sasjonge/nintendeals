@@ -102,9 +102,12 @@ def activate_job():
         last_update_thread.start()
 
         while True:
-            inbox.check()
-
-            time.sleep(15)
+            try:
+                inbox.check()
+                time.sleep(10)
+            except Exception as exc:
+                LOG.error(exc)
+                time.sleep(15)
 
     run_job_thread = Thread(target=run_job)
     run_job_thread.start()
