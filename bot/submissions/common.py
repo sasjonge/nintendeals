@@ -1,7 +1,9 @@
 from datetime import datetime
 
+from commons.emoji import ALL_TIME_LOW
 from commons.emoji import EXP_TODAY
 from commons.emoji import EXP_TOMORROW
+from commons.emoji import FIRST_TIME
 from commons.emoji import NEW
 from commons.emoji import NINTENDO
 from commons.emoji import PLAYERS
@@ -17,6 +19,8 @@ def header(system=None, country=None, disable_players=False, disable_wishlisted=
 
     if system:
         header.append(f'> {NEW} new\n')
+        header.append(f'> {FIRST_TIME} first sale\n')
+        header.append(f'> {ALL_TIME_LOW} all time low\n')
         header.append(f'> {EXP_TOMORROW} expires tomorrow\n')
         header.append(f'> {EXP_TODAY} expires today\n')
         header.append(f'> {NINTENDO} published by nintendo\n')
