@@ -4,15 +4,16 @@ from bot.submissions.common import SEPARATOR
 from bot.submissions.common import footer
 from bot.submissions.common import header
 from commons.config import COUNTRIES
+from commons.emoji import ALL_TIME_LOW
 from commons.emoji import EXP_TODAY
 from commons.emoji import EXP_TOMORROW
+from commons.emoji import FIRST_TIME
 from commons.emoji import GEM
 from commons.emoji import NEW
 from commons.emoji import NINTENDO
 from commons.emoji import PLAYERS
 from commons.emoji import STAR
 from commons.emoji import WARNING
-from commons.keys import CURRENCY
 from commons.keys import CURRENCY_CODE
 from commons.keys import DIGITS
 from commons.keys import FLAG
@@ -26,6 +27,7 @@ def make_row(game, country, price, sale, disable_url=False, **kwargs):
     now = datetime.utcnow()
 
     title = game.titles.get(country[REGION], game.title)
+    country_price = price.prices[country[ID]]
 
     if game.published_by_nintendo:
         title = f'{NINTENDO} {title}'
@@ -33,8 +35,8 @@ def make_row(game, country, price, sale, disable_url=False, **kwargs):
     if game.hidden_gem:
         title = f'{GEM} {title}'
 
-    if len(title) > 25:
-        title = f'{title[:26]}…'.replace(' …', '…')
+    if len(title) > 23:
+        title = f'{title[:23]}…'.replace(' …', '…')
 
     if not disable_url:
         if game.websites.get(country[ID]):
@@ -47,7 +49,15 @@ def make_row(game, country, price, sale, disable_url=False, **kwargs):
     else:
         bold = ''
 
-    emoji = NEW if new else ''
+    emoji = ''
+
+    if new:
+        emoji += NEW
+
+    if len(country_price.sales) == 1:
+        emoji += FIRST_TIME
+    elif min([sale.sale_price for sale in country_price.sales]) == sale.sale_price:
+        emoji += ALL_TIME_LOW
 
     time_left = sale.end_date - now
     formatted_time = sale.end_date.strftime('%b %d')
@@ -56,20 +66,18 @@ def make_row(game, country, price, sale, disable_url=False, **kwargs):
         days = time_left.days
 
         if days < 2:
-            emoji = EXP_TOMORROW
+            emoji += EXP_TOMORROW
     else:
         hours = round(time_left.seconds / 60 / 60)
 
         if hours <= 24:
-            emoji = EXP_TODAY
+            emoji += EXP_TODAY
 
         if hours > 0:
             formatted_time = f'{formatted_time} ({hours}h)'
         else:
             minutes = round(time_left.seconds / 60)
             formatted_time = f'{formatted_time} ({minutes}m)'
-
-    country_price = price.prices[country[ID]]
 
     if not kwargs.get('disable_extra_zeros', False):
         digits = country[DIGITS]
@@ -115,7 +123,7 @@ def make_tables(games, prices, system, country, **kwargs):
     table_separators = '--- '
 
     table_columns += '| - '
-    table_separators += '| :---: '
+    table_separators += '| --- '
 
     table_columns += '| Expiration '
     table_separators += '| --- '
@@ -178,14 +186,20 @@ def make_tables(games, prices, system, country, **kwargs):
             if time_left.days < 2:
                 continue
 
+        row = make_row(
+            game=game,
+            country=country,
+            price=price,
+            sale=latest_sale,
+            disable_url=kwargs.get('disable_new_urls', False),
+            **kwargs
+        )
+
         if days < 1:
-            row = make_row(game, country, price, latest_sale, disable_url=kwargs.get('disable_new_urls', False), **kwargs)
             new_sales.append(row)
         elif now.strftime("%V") == latest_sale.start_date.strftime("%V"):
-            row = make_row(game, country, price, latest_sale, disable_url=kwargs.get('disable_new_urls', False), **kwargs)
             week_sales.append(row)
         else:
-            row = make_row(game, country, price, latest_sale, disable_url=kwargs.get('disable_current_urls', False), **kwargs)
             current_sales.append(row)
 
         games_on_sale += 1
