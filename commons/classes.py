@@ -3,7 +3,6 @@ from datetime import datetime
 from datetime import timedelta
 from random import randint
 
-from commons.config import USER_SUBREDDIT
 from commons.config import COUNTRIES
 from commons.config import REGIONS
 from commons.emoji import GEM
@@ -229,7 +228,7 @@ class Submission:
         self.subreddit = data['subreddit']
         self.system = data['system']
         self.title = data['title']
-        self.url = data.get('url', f'https://www.reddit.com/user/{USER_SUBREDDIT}/comments/{self.submission_id}')
+        self.url = data.get('url', f'https://redd.it/{self.submission_id}')
         self.length = data.get('length', 0)
 
         now = datetime.utcnow()

@@ -2,14 +2,12 @@ from bot.submissions.common import SEPARATOR
 from bot.submissions.common import footer
 from bot.submissions.common import header
 
+from commons.config import USER_SUBREDDIT
 from commons.config import COUNTRIES
 from commons.emoji import EMPTY
-from commons.emoji import STAR
-from commons.emoji import WARNING
 from commons.keys import FLAG
 from commons.keys import NAME
 from commons.keys import REGION
-from commons.keys import US, CH, NZ
 from commons.settings import WEBSITE_URL
 
 
@@ -106,8 +104,10 @@ def generate(games, prices, submissions, system):
         if not submission:
             continue
 
+        full_url = f'https://www.reddit.com/r/{USER_SUBREDDIT}/comments/{submission.submission_id}'
+
         content.append(
-            f'[{details[FLAG]} {details[NAME]}]({submission.url})|{submission.new_sales}|{submission.total_sales}'
+            f'[{details[FLAG]} {details[NAME]}]({full_url})|{submission.new_sales}|{submission.total_sales}'
         )
 
     content.append('')
